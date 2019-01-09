@@ -133,7 +133,7 @@ rollingout=function(z, supply, cutoff=1.5, replace=NA, mad_const=1.4826, nona=F)
 rolling_outlier=function(data, supply, key, year, qtr_key, cutoff=1.5, replace=NA, mad_const=1.4826, nona=F)
 {
   data=data %>% arrange_at(vars(one_of(c(key, year, qtr_key))))
-  roll_data= lapply(with(data, split(data,list(unique(eval(parse(text="key")))))), rollingout, 
+  roll_data= lapply(with(data, split(data,list(unique(eval(parse(text=key)))))), rollingout, 
                     supply=supply, cutoff=cutoff, replace=replace, mad_const=mad_const, nona=nona)
   roll_data= bind_rows(roll_data) 
   roll_data=roll_data %>% arrange_at(vars(one_of(c(key, year, qtr_key))))
