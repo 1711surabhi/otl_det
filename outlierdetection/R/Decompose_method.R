@@ -23,7 +23,7 @@ decompose_ts= function(data, supply, year)
   data=data.frame(data)
   if(nrow(data)>0)
   {
-    data[,mget("supply")[[1]]]=ts(data[,mget("supply")[[1]]], frequency = 4, start = min(data$year))
+    data[,mget("supply")[[1]]]=ts(data[,mget("supply")[[1]]], frequency = 4, start = min(data[,mget("year")[[1]]]))
     data$seasonal=stlplus(data[,mget("supply")[[1]]], s.window = "periodic", na.action = na.approx)$data[,"seasonal"]
     data$trend=stlplus(data[,mget("supply")[[1]]], s.window = "periodic", na.action = na.approx)$data[,"trend"]
     data$remainder=stlplus(data[,mget("supply")[[1]]], s.window = "periodic", na.action = na.approx)$data[,"remainder"]
