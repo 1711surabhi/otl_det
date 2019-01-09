@@ -70,7 +70,7 @@ decompose=function(data, supply, key, year, qtr_key)
   {
     data=data %>% arrange_at(vars(one_of(c(key, year, qtr_key))))
     ##Split according to key and decompose the data
-    dec_data= lapply(with(data, split(data,list(eval(parse(text=key))))), decompose_ts, supply=supply, year)
+    dec_data= lapply(with(data, split(data,list(eval(parse(text="key"))))), decompose_ts, supply=supply, year)
     dec_data= bind_rows(dec_data) 
     dec_data
   }
