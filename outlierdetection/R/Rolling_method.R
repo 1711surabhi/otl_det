@@ -51,7 +51,7 @@ mad_outliers= function(data, cutoff, replace, mad_const){
 rollingout=function(z, supply, cutoff=1.5, replace=NA, mad_const=1.4826, nona=F){
   z=as.data.frame(z)
   ##The block is for rolling method without NAs
-  if(nona & nrows(z)>0)
+  if(nona & nrow(z)>0)
   {
     temp=z
     temp_colnames=colnames(temp)
