@@ -2,6 +2,7 @@
 
 export(decompose)
 export(decompose_outlier)
+export(imputation)
 export(overall_outlier)
 export(parallel_outlier_detection)
 export(rolling_outlier)
