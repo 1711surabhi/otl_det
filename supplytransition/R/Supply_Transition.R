@@ -575,7 +575,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     state_rate$year=as.numeric(as.character(state_rate$year))
     msa=left_join(
       inner_join(
-        full_join(geo_map %>% select(msa_id, state_id) %>% filter(!is.na(msa_id)) %>% unique() %>% mutate(fake="1"),
+        full_join(geo_map %>% select(msa_id, state_id, primary_state) %>% filter(primary_state==1) %>% unique() %>% mutate(fake="1"),
                   occ_map %>% mutate(fake="1"),
                   by="fake") %>% select(-fake),
         msa_supply_file, 
