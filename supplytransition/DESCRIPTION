@@ -1,5 +1,5 @@
-Package: outlierdetection
-Title: Outlier Detection
+Package: supplytransition
+Title: Supply Transition
 Version: 0.0.0.9000
 Authors@R: person("Surabhi", "Agrawal", email = "surabhi.agrawal@gartner.com", role = c("aut", "cre"))
 Description: The package helps to detect outlier using different ensemble techniques
