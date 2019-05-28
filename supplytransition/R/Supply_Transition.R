@@ -108,8 +108,12 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
   all_cons <- dbListConnections(MySQL())
   for(con in all_cons){dbDisconnect(con)}
   
+  geo_map_raw= geo_map_raw %>%
+    group_by(country_id, state_id) %>%
+    mutate(sum_ps=sum(primary_state))
+    
   geo_map=geo_map_raw %>%
-    filter(primary_state ==1 | is.na(primary_state))
+    filter(primary_state ==1 | is.na(primary_state) | sum_ps==0)
   
   geo_map=as.data.frame(geo_map)
   print("DB connection successful")
