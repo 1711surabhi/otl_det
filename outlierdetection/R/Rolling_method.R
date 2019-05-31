@@ -63,6 +63,10 @@ rollingout=function(z, supply, cutoff=1.5, replace=NA, mad_const=1.4826, nona=F)
   if (nrow(z)>0)
   {
     z1=z[,mget("supply")[[1]]]
+    if(length(z1)%%2==1)
+    {
+      z1=c(z1,NA)
+    }
     ##Applying rolling outlier detection in 1st set
     z2=rollapply(z1,width=4,by=4,FUN=mad_outliers, cutoff=cutoff, mad_const=mad_const, replace=replace)
     z2=as.vector(t(z2))
