@@ -645,13 +645,15 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     
     if(sum_up_msa=="yes")
     {
-      msa_final=msa_onet_supply %>%
-        group_by(state_id, onet_code, year) %>%
-        mutate(msa_onet_sum=sum(onet_final_supply, na.rm=T)) %>%
+      
+      msa_onet_supply=data.table(msa_onet_supply)
+      msa_onet_supply[, `:=` (msa_onet_sum = sum(onet_final_supply, na.rm=T)), 
+                      by = c("state_id", "onet_code", "year")]
+      
+      
+      msa_final= msa_onet_supply %>%
         mutate(msa_onet_supply=onet_final_supply/msa_onet_sum*state_onet_supply) %>%
-        group_by(msa_id, onet_occupation_type_id, onet_code, year, msa_onet_supply) %>%
-        summarise(n=n()) %>%
-        select(-n) %>%
+        select(msa_id, onet_occupation_type_id, onet_code, year, msa_onet_supply) %>%
         rename(occupation_type_id=onet_occupation_type_id,
                tot_emp=msa_onet_supply,
                occupation_code=onet_code) %>%
@@ -661,15 +663,16 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     {
       if(threshold_msa=="yes")
       {
-        msa_final=msa_onet_supply %>%
-          group_by(state_id, onet_code, year) %>%
-          mutate(msa_onet_sum=sum(onet_final_supply, na.rm=T)) %>%
+        msa_onet_supply=data.table(msa_onet_supply)
+        msa_onet_supply[, `:=` (msa_onet_sum = sum(onet_final_supply, na.rm=T)), 
+                        by = c("state_id", "onet_code", "year")]
+        
+        
+        msa_final= msa_onet_supply %>%
           mutate(msa_onet_supply=ifelse(state_onet_supply<msa_onet_sum, 
                                         onet_final_supply/msa_onet_sum*state_onet_supply,
                                         onet_final_supply)) %>%
-          group_by(msa_id, onet_occupation_type_id, onet_code, year, msa_onet_supply) %>%
-          summarise(n=n()) %>%
-          select(-n) %>%
+          select(msa_id, onet_occupation_type_id, onet_code, year, msa_onet_supply) %>%
           rename(occupation_type_id=onet_occupation_type_id,
                  tot_emp=msa_onet_supply,
                  occupation_code=onet_code) %>%
@@ -677,18 +680,15 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
           select(occupation_type_id, msa_id, year, occupation_code, tot_emp)
       }else
       {
+        msa_onet_supply=data.table(msa_onet_supply)
         msa_final=msa_onet_supply %>%
           rename(occupation_type_id=onet_occupation_type_id,
                  tot_emp=onet_final_supply,
                  occupation_code=onet_code) %>%
           mutate(tot_emp=round(tot_emp,0)) %>%
-          group_by(occupation_type_id, msa_id, year, occupation_code, tot_emp) %>%
-          summarise(n=n()) %>%
-          select(-n)
+          select(occupation_type_id, msa_id, year, occupation_code, tot_emp) 
       }
     }
-    
-    
     
     for(i in min(msa_final$year):max(msa_final$year))
     {
@@ -714,4 +714,3 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     names(final_list)[length(final_list)]="MSA"
   }
 }
-
