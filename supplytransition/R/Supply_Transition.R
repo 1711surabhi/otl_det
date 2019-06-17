@@ -636,8 +636,9 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
              cnt=n()) 
     
     msa_onet_supply= msa_onet_supply %>%
+      mutate(cnt_na=ifelse(is.na(count),1,0)) %>%
       group_by(msa_id, state_id, soc, year, onet_supply, year) %>%
-      mutate(cnt_na=sum(is.na(count))) 
+      mutate(cnt_na=sum(cnt_na)) 
     
     msa_onet_supply= msa_onet_supply %>%
       mutate(onet_final_supply=ifelse(is.na(count), onet_supply, count/sum*onet_supply*(cnt-cnt_na)))
