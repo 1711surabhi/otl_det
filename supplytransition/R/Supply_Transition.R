@@ -27,8 +27,6 @@
 #' final_list[[3]][[1]]: MSA final files
 #' final_list[[3]][[2]]: MSA Rate
 
-
-
 supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_supply_file=NA, redist_SOC=6, output_path="",
                            country_id=NA, sum_up_msa="no", threshold_msa="yes")
 {
@@ -98,7 +96,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
   mydb = dbConnect(MySQL(), 
                    user='sagrawal', password='vzp2dDSFdGWBm5Sm', 
                    host='10.86.21.235')
-                   #host='10.0.5.30')
+  #host='10.0.5.30')
   
   query = paste0("select s.country_id, s.id as state_id, a.msa_id, a.primary_state from norm_prod.states_2016 s left join norm_prod.msas_states_2016 a on s.id=a.state_id where s.country_id=",country_id,";")
   ## Run the query
@@ -111,7 +109,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
   geo_map_raw= geo_map_raw %>%
     group_by(country_id, state_id) %>%
     mutate(sum_ps=sum(primary_state))
-    
+  
   geo_map=geo_map_raw %>%
     filter(primary_state ==1 | is.na(primary_state) | sum_ps==0)
   
@@ -317,7 +315,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     names(final_list)[length(final_list)]="Country"
     
   }
-    
+  
   if(is.data.frame(state_supply_file))
   {
     repeat
@@ -343,10 +341,10 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
         }else
         {
           winDialog(type = c("ok"), "The Demand file should have columns name:
-                  state_id,
-                  ONET_code, 
-                  local_code and
-                  state_count")
+                    state_id,
+                    ONET_code, 
+                    local_code and
+                    state_count")
         }
       }
     }
@@ -356,7 +354,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       repeat
       {
         country_rate_name=choose.files(caption=paste0("Select the Country Rates with onet_code, local_occupation_code, year, country rate and onet_supply"), 
-                                 multi=F)
+                                       multi=F)
         if(substr(country_rate_name,nchar(country_rate_name)-2,nchar(country_rate_name))!="csv")
         {
           winDialog(type = c("ok"), "Please input CSV file")
@@ -374,11 +372,11 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
           }else
           {
             winDialog(type = c("ok"), "The Country Rate file should have columns name:
-                  onet_code, 
-                  local_occupation_code,
-                  year,
-                  country_rate and 
-                  country_onet_supply")
+                      onet_code, 
+                      local_occupation_code,
+                      year,
+                      country_rate and 
+                      country_onet_supply")
           }
         }
       }
@@ -413,7 +411,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       rename(demand_count=count)
     
     state=left_join(state, country_rate, by=c("onet_occupation_type_id",
-                                               "local_occupation_code", "onet_code", "year"))
+                                              "local_occupation_code", "onet_code", "year"))
     
     state=state %>%
       group_by(state_id, local_occupation_code, year) %>%
@@ -451,10 +449,13 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     state_onet_supply=state_bm %>%
       mutate(soc=substr(onet_code,1,redist_SOC)) %>%
       group_by(state_id, soc, year, onet_supply, year) %>%
-      mutate(sum=sum(count, na.rm=T),
-             cnt=n(),
-             cnt_na=sum(is.na(count))) %>%
-      mutate(onet_final_supply=ifelse(is.na(count), onet_supply,count/sum*onet_supply*(cnt-cnt_na)))
+      mutate(cnt_na=sum(is.na(count))) 
+    
+    state_onet_supply= state_onet_supply %>%
+      group_by(state_id, soc, year, onet_supply, year) %>%
+      mutate(cnt=n(),
+             sum=sum(count, na.rm=T)) %>%
+      mutate(onet_final_supply=ifelse(is.na(count), onet_supply,count/sum*onet_supply*(cnt-cnt_na))) 
     
     state_final=state_onet_supply %>%
       group_by(onet_code, year) %>%
@@ -492,7 +493,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     names(final_list)[length(final_list)]="State"
     
   }
-      
+  
   if(is.data.frame(msa_supply_file))
   {
     repeat
@@ -517,9 +518,9 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
         }else
         {
           winDialog(type = c("ok"), "The Demand file should have columns name:
-                ONET_code, 
-                local_code and
-                msa_count")
+                    ONET_code, 
+                    local_code and
+                    msa_count")
         }
       }
     }
@@ -588,6 +589,13 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     msa=left_join(msa, state_rate, by=c("onet_occupation_type_id", "state_id",
                                         "local_occupation_code", "onet_code", "year"))
     
+    msa= msa %>%
+      group_by(state_id, onet_code, year) %>%
+      mutate(cnt=n(),
+             cnt_na=sum(is.na(state_onet_supply))) %>%
+      mutate(state_onet_supply=ifelse(cnt==cnt_na,0,na.locf(state_onet_supply)))
+    
+    
     msa=msa %>%
       group_by(msa_id, state_id, local_occupation_code, year) %>%
       mutate(demand_count_sum_by_local=sum(demand_count, na.rm=T)) %>%
@@ -625,8 +633,13 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       mutate(soc=substr(onet_code,1,redist_SOC)) %>%
       group_by(msa_id, state_id, soc, year, onet_supply, year) %>%
       mutate(sum=sum(count, na.rm=T),
-             cnt=n(),
-             cnt_na=sum(is.na(count))) %>%
+             cnt=n()) 
+    
+    msa_onet_supply= msa_onet_supply %>%
+      group_by(msa_id, state_id, soc, year, onet_supply, year) %>%
+      mutate(cnt_na=sum(is.na(count))) 
+    
+    msa_onet_supply= msa_onet_supply %>%
       mutate(onet_final_supply=ifelse(is.na(count), onet_supply, count/sum*onet_supply*(cnt-cnt_na)))
     
     if(sum_up_msa=="yes")
@@ -699,8 +712,5 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     final_list[[length(final_list)+1]]=list(data.frame(msa_final), data.frame(msa_rate))
     names(final_list)[length(final_list)]="MSA"
   }
-  final_list
 }
-
-
 
