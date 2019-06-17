@@ -27,6 +27,7 @@
 #' final_list[[3]][[1]]: MSA final files
 #' final_list[[3]][[2]]: MSA Rate
 
+
 supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_supply_file=NA, redist_SOC=6, output_path="",
                            country_id=NA, sum_up_msa="no", threshold_msa="yes")
 {
@@ -457,13 +458,14 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
              sum=sum(count, na.rm=T)) %>%
       mutate(onet_final_supply=ifelse(is.na(count), onet_supply,count/sum*onet_supply*(cnt-cnt_na))) 
     
-    state_final=state_onet_supply %>%
-      group_by(onet_code, year) %>%
-      mutate(state_onet_sum=sum(onet_final_supply, na.rm=T)) %>%
+    state_onet_supply=data.table(state_onet_supply)
+    state_onet_supply[, `:=` (state_onet_sum = sum(onet_final_supply, na.rm=T)), 
+                      by = c("onet_code", "year")]
+    
+    
+    state_final= state_onet_supply %>%
       mutate(state_onet_supply=onet_final_supply/state_onet_sum*country_onet_supply) %>%
-      group_by(state_id, onet_occupation_type_id, onet_code, year, state_onet_supply) %>%
-      summarise(n=n()) %>%
-      select(-n) %>%
+      select(state_id, onet_occupation_type_id, onet_code, year, state_onet_supply) %>%
       rename(occupation_type_id=onet_occupation_type_id,
              tot_emp=state_onet_supply,
              occupation_code=onet_code) %>%
@@ -714,3 +716,4 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     names(final_list)[length(final_list)]="MSA"
   }
 }
+
