@@ -85,6 +85,7 @@ seq_outlier_detection=function(data, key, supply, year, qtr_key, seq=c(1,2,3,4),
   }
   else
   { 
+    data=data.frame(data)
     data$seq_supply_without_otl=data[,mget("supply")[[1]]]
     data$seq_flag=0
     data$seq_flag[is.na(data$seq_supply_without_otl)]=1
