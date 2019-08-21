@@ -69,7 +69,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
        !"tot_emp" %in% colnames(state_supply_file) |
        !"year" %in% colnames(state_supply_file))
     {
-      stop("There should be a column named occupation_code, state_id, year and tot_emp in sjjtate supply file")
+      stop("There should be a column named occupation_code, state_id, year and tot_emp in state supply file")
     }
     else
     {
