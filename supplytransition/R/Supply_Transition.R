@@ -132,6 +132,8 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       if("onet_code" %in% colnames(occ_map) &
          "local_occupation_code" %in% colnames(occ_map))
       {
+         occ_map= occ_map %>%
+          filter((substr(onet_code,1,2)==99 & nchar(onet_code)==max(nchar(onet_code))) | substr(onet_code,1,2)!=99)
         break
       }else
       {
