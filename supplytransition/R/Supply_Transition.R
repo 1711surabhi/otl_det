@@ -132,7 +132,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       if("onet_code" %in% colnames(occ_map) &
          "local_occupation_code" %in% colnames(occ_map))
       {
-         occ_map= occ_map %>%
+        occ_map= occ_map %>%
           filter((substr(onet_code,1,2)==99 & nchar(onet_code)==max(nchar(onet_code))) | substr(onet_code,1,2)!=99)
         break
       }else
@@ -295,6 +295,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       mutate(tot_emp=round(tot_emp,0)) %>%
       select(occupation_type_id, country_id, year, occupation_code, tot_emp)
     
+    country_final$tot_emp[is.na(country_final$tot_emp)]=0
     for(i in min(country_final$year):max(country_final$year))
     {
       temp=country_final %>%
@@ -474,6 +475,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       mutate(tot_emp=round(tot_emp,0)) %>%
       select(occupation_type_id, state_id, year, occupation_code, tot_emp)
     
+    state_final$tot_emp[is.na(state_final$tot_emp)]=0
     for(i in min(state_final$year):max(state_final$year))
     {
       temp=state_final %>%
@@ -489,6 +491,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
                                   onet_occupation_type_id=occupation_type_id,
                                   state_onet_supply=tot_emp),
                          by=c("state_id", "onet_code", "year"))
+    
     
     write.csv(state_final, paste0(output_path,"/state_supply_output.csv"), row.names = F)
     write.csv(state_rate, paste0(output_path,"/ONET State Rates and Supply.csv"), row.names = F)
@@ -694,6 +697,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       }
     }
     
+    msa_final$tot_emp[is.na(msa_final$tot_emp)]=0
     for(i in min(msa_final$year):max(msa_final$year))
     {
       temp=msa_final %>%
