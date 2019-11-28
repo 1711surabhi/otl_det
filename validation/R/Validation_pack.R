@@ -292,7 +292,7 @@ validation=function(country_fin=NA, country_raw=NA,
     ## Input country file if does not exist
     repeat
     {
-      if(is.data.frame("country_fin"))
+      if(is.data.frame(country_fin))
       {
         break
       }
@@ -518,7 +518,7 @@ validation=function(country_fin=NA, country_raw=NA,
             ############checking for state_fin file
             repeat
             {
-              if(is.data.frame("state_fin"))
+              if(is.data.frame(state_fin))
               {
                 break
               }
