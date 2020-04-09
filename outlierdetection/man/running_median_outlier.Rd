@@ -18,20 +18,23 @@ running_median_outlier(data, supply, key, year, qtr_key, quantile = 0.75,
 
 \item{qtr_key:}{Attribute containing the quarter values. NOTE: For yearly data, the quarter column may contain the same value throug out}
 
-\item{quantile:}{Compute any of 25% / 50% / 75% / 100% quartile depending on the data requirements}
+\item{quantile:}{Compute any of 25%  50%  75%  100% quartile depending on the data requirements}
 
 \item{replace:}{In the final column, the outliers will be replaced by this variable's value. DEFAULTS to NA.}
-
-\item{return:}{The final data frame with the additional attributes
+}
+\value{
 spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable
-otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.}
+
+otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.
 }
 \description{
 Call this function to flag outliers
-The fucntion will first compute Median in running windows on the target variable data point
+The function will first compute Median in running windows on the target variable data point
 Computes the difference between the Supply (target variable in this case) and Median
 calculates quartile in order to provide a threshold for comparison
 The function flags outliers if the diff > quartile
+}
+\details{
 NOTE1: This technique works best with non-seasonal data (Trend as well)
 NOTE2: Running Median Window is fixed as 3 to avoid more imputations
 NOTE3: If window is even, first and last two data points would have to be imputed
