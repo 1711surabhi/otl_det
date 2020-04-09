@@ -23,9 +23,9 @@ running_median_outlier(data, supply, key, year, qtr_key, quantile = 0.75,
 \item{replace:}{In the final column, the outliers will be replaced by this variable's value. DEFAULTS to NA.}
 }
 \value{
-spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable
+spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable \cr
 
-otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.
+otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.\cr
 }
 \description{
 Call this function to flag outliers.
