@@ -28,16 +28,16 @@ spl_without_otl_runmed: The target attribute in which all the outliers will be r
 otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.
 }
 \description{
-Call this function to flag outliers
-The function will first compute Median in running windows on the target variable data point
+Call this function to flag outliers.
+The function will first compute Median in running windows on the target variable data point.
 Computes the difference between the Supply (target variable in this case) and Median
-calculates quartile in order to provide a threshold for comparison
-The function flags outliers if the diff > quartile
+calculates quartile in order to provide a threshold for comparison.
+The function flags outliers if the diff > quartile \cr
 }
 \details{
-NOTE1: This technique works best with non-seasonal data (Trend as well)
-NOTE2: Running Median Window is fixed as 3 to avoid more imputations
+NOTE1: This technique works best with non-seasonal data (Trend as well)\cr
+NOTE2: Running Median Window is fixed as 3 to avoid more imputations\cr
 NOTE3: If window is even, first and last two data points would have to be imputed
-Hence, to minimize unnecessary imputations, it is advised not to change the window
-NOTE4: Quantile may be changed based on the data requirements
+Hence, to minimize unnecessary imputations, it is advised not to change the window\cr
+NOTE4: Quantile may be changed based on the data requirements\cr
 }
