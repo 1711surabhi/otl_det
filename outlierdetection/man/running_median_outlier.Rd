@@ -2,17 +2,7 @@
 % Please edit documentation in R/RunMed_function.R
 \name{running_median_outlier}
 \alias{running_median_outlier}
-\title{Running Median Outlier Detection Technique (On TIme Series Data)
-Call this function to flag outliers
-The fucntion will first compute Median in running windows on the target variable data point
-Computes the difference between the Supply (target variable in this case) and Median
-calculates quartile in order to provide a threshold for comparison
-The function flags outliers if the diff > quartile
-NOTE1: This technique works best with non-seasonal data (Trend as well)
-NOTE2: Running Median Window is fixed as 3 to avoid more imputations
-NOTE3: If window is even, first and last two data points would have to be imputed
-Hence, to minimize unnecessary imputations, it is advised not to change the window
-NOTE4: Quantile may be changed based on the data requirements}
+\title{Running Median Outlier Detection Technique (On Time Series Data)}
 \usage{
 running_median_outlier(data, supply, key, year, qtr_key, quantile = 0.75,
   replace = NA)
@@ -37,7 +27,6 @@ spl_without_otl_runmed: The target attribute in which all the outliers will be r
 otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.}
 }
 \description{
-Running Median Outlier Detection Technique (On TIme Series Data)
 Call this function to flag outliers
 The fucntion will first compute Median in running windows on the target variable data point
 Computes the difference between the Supply (target variable in this case) and Median
