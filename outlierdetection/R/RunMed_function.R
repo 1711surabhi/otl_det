@@ -1,25 +1,29 @@
- #' Running Median Outlier Detection Technique (On TIme Series Data)
- #' Call this function to flag outliers
- #' The fucntion will first compute Median in running windows on the target variable data point
+ #' Running Median Outlier Detection Technique (On Time Series Data)
+ #'
+ #' Call this function to flag outliers.
+ #' The function will first compute Median in running windows on the target variable data point.
  #' Computes the difference between the Supply (target variable in this case) and Median
- #' calculates quartile in order to provide a threshold for comparison
- #' The function flags outliers if the diff > quartile
- #' NOTE1: This technique works best with non-seasonal data (Trend as well)
- #' NOTE2: Running Median Window is fixed as 3 to avoid more imputations
+ #' calculates quartile in order to provide a threshold for comparison.
+ #' The function flags outliers if the diff > quartile \cr
+ #'
+ #' NOTE1: This technique works best with non-seasonal data (Trend as well)\cr
+ #' NOTE2: Running Median Window is fixed as 3 to avoid more imputations\cr
  #' NOTE3: If window is even, first and last two data points would have to be imputed
- #' Hence, to minimize unnecessary imputations, it is advised not to change the window
- #' NOTE4: Quantile may be changed based on the data requirements
+ #' Hence, to minimize unnecessary imputations, it is advised not to change the window\cr
+ #' NOTE4: Quantile may be changed based on the data requirements\cr
+ #'
  #' @param data: The Data Frame or Data Table containing all the required variables and data points
  #' @param supply: target Variable of which the Median will be computed and other operations will be performed
  #' @param key: Attributes on which the split happens. For ex, Country/State/MSA ID, Occupation ID etc
  #' @param year: Year attribute of the data frame
  #' @param qtr_key: Attribute containing the quarter values. NOTE: For yearly data, the quarter column may contain the same value throug out
- #' @param quantile: Compute any of 25% / 50% / 75% / 100% quartile depending on the data requirements
+ #' @param quantile: Compute any of 25%  50%  75%  100% quartile depending on the data requirements
  #' @param replace: In the final column, the outliers will be replaced by this variable's value. DEFAULTS to NA.
- #' @param return: The final data frame with the additional attributes
- #' spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable
- #' otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.
+ #'
+ #' @return spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable \cr
+ #' @return otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.\cr
  #' @export
+ #'
 
 
 running_median_outlier <- function(data, supply, key, year, qtr_key, quantile = 0.75, replace=NA){
