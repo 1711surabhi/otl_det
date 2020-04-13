@@ -11,8 +11,8 @@ parallel_outlier_detection(data, key, supply, year, qtr_key,
   rMAD_nona_replace = NA, overall_MAD_cutoff = 1.5,
   overall_MAD_mad_const = 1.4826, overall_MAD_replace = NA,
   dec_wt = 0.4, rMAD_wt = 0.3, rMAD_nona_wt = 0.2,
-  overallMAD_wt = 0.1, threshold = 0.3, runmed_wt = 0.3,
-  runmed_quantile = 0.75, runmed_replace = NA)
+  overallMAD_wt = 0.1, runmed_wt = 0.3, runmed_quantile = 0.75,
+  runmed_replace = NA, threshold = 0.3)
 }
 \arguments{
 \item{data:}{Th complete data frame or data table or tibble that contains the data}
