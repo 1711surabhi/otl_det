@@ -2,7 +2,7 @@
 % Please edit documentation in R/Parallel_ensemble_technique.R
 \name{parallel_outlier_detection}
 \alias{parallel_outlier_detection}
-\title{Parallel Ensemble Technique to detect Outlier}
+\title{Parallel Ensemble Technique to detect Outliers}
 \usage{
 parallel_outlier_detection(data, key, supply, year, qtr_key,
   dec_cutoff = 1.5, dec_mad_const = 1.4826, dec_replace = NA,
@@ -11,7 +11,8 @@ parallel_outlier_detection(data, key, supply, year, qtr_key,
   rMAD_nona_replace = NA, overall_MAD_cutoff = 1.5,
   overall_MAD_mad_const = 1.4826, overall_MAD_replace = NA,
   dec_wt = 0.4, rMAD_wt = 0.3, rMAD_nona_wt = 0.2,
-  overallMAD_wt = 0.1, threshold = 0.3)
+  overallMAD_wt = 0.1, threshold = 0.3, runmed_wt = 0.3,
+  runmed_quantile = 0.75, runmed_replace = NA)
 }
 \arguments{
 \item{data:}{Th complete data frame or data table or tibble that contains the data}
@@ -24,40 +25,40 @@ parallel_outlier_detection(data, key, supply, year, qtr_key,
 
 \item{qtr_key:}{Attribute that contains the quarter value.}
 
-\item{dec_cutoff:}{The cutoff values against which the deviation will be checked for decomposition method. 
+\item{dec_cutoff:}{The cutoff values against which the deviation will be checked for decomposition method.
 If the computed ratio is less than the cutoff, then the point if not an outlier. DEFAULT to 1.5}
 
-\item{dec_mad_const:}{Scale factor to calculate MAD values in decomposition method to maintain consistency. 
+\item{dec_mad_const:}{Scale factor to calculate MAD values in decomposition method to maintain consistency.
 DEFAULT to 1.4826}
 
-\item{dec_replace:}{In the final column for decomposition method, 
+\item{dec_replace:}{In the final column for decomposition method,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
-\item{rMAD_cutoff:}{The cutoff values against which the deviation will be checked for rolling MAD method. 
+\item{rMAD_cutoff:}{The cutoff values against which the deviation will be checked for rolling MAD method.
 If the computed ratio is less than the cutoff, then the point if not an outlier. DEFAULT to 1.5}
 
-\item{rMAD_mad_const:}{Scale factor to calculate MAD values in rolling MAD method to maintain consistency. 
+\item{rMAD_mad_const:}{Scale factor to calculate MAD values in rolling MAD method to maintain consistency.
 DEFAULT to 1.4826}
 
-\item{rMAD_replace:}{In the final column for rolling MAD method, 
+\item{rMAD_replace:}{In the final column for rolling MAD method,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
-\item{rMAD_nona_cutoff:}{The cutoff values against which the deviation will be checked for rolling MAD method without NAs. 
+\item{rMAD_nona_cutoff:}{The cutoff values against which the deviation will be checked for rolling MAD method without NAs.
 If the computed ratio is less than the cutoff, then the point if not an outlier. DEFAULT to 1.5}
 
-\item{rMAD_nona_mad_const:}{Scale factor to calculate MAD values in rolling MAD method without NAs to maintain consistency. 
+\item{rMAD_nona_mad_const:}{Scale factor to calculate MAD values in rolling MAD method without NAs to maintain consistency.
 DEFAULT to 1.4826}
 
-\item{rMAD_nona_replace:}{In the final column for rolling MAD method without NAs, 
+\item{rMAD_nona_replace:}{In the final column for rolling MAD method without NAs,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
-\item{overallMAD_cutoff:}{The cutoff values against which the deviation will be checked for overall MAD method. 
+\item{overallMAD_cutoff:}{The cutoff values against which the deviation will be checked for overall MAD method.
 If the computed ratio is less than the cutoff, then the point if not an outlier. DEFAULT to 1.5}
 
-\item{overallMAD_mad_const:}{Scale factor to calculate MAD values in overall MAD method to maintain consistency. 
+\item{overallMAD_mad_const:}{Scale factor to calculate MAD values in overall MAD method to maintain consistency.
 DEFAULT to 1.4826}
 
-\item{overallMAD_replace:}{In the final column for overall MAD method, 
+\item{overallMAD_replace:}{In the final column for overall MAD method,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
 \item{dec_wt:}{Weight that should be applied on otl_flag_dec to get the final flag weight.}
@@ -68,10 +69,17 @@ the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
 \item{overallMAD_wt:}{Weight that should be applied on otl_flag_overallMAD to get the final flag weight.}
 
+\item{runmed_wt:}{Weight that should be applied on otl_flag_runmed to get the final flag weight.}
+
+\item{runmed_replace:}{In the final column for decomposition method,
+the outliers will be replaced by this variable's value. DEFAULT to NA.}
+
+\item{runmed_quantile:}{Compute any of 25% 50% 75% 100% quartile depending on the data requirements}
+
 \item{threshold:}{the threshold value greater than which the final weight will be marked as an outlier.}
 }
 \value{
-The dataset with few extra attributes. 
+The dataset with few extra attributes.
 If the weigth of a perticular method is 0, then attributes for that method will not be there.\cr
 Technique related attributes will be:\cr
 spl_without_otl_dec: The target attribute in which all the outliers will be replaced by the replace variable\cr
@@ -81,7 +89,9 @@ otl_flag_rMAD: Outlier flag by rolling method. Outliers will be marked as 1.\cr
 spl_without_otl_rMAD_nona: The target attribute in which all the outliers will be replaced by the replace variable\cr
 otl_flag_rMAD_nona: Outlier flag by rolling method without NAs. Outliers will be marked as 1.\cr
 spl_without_otl_overallMAD: The target attribute in which all the outliers will be replaced by the replace variable\cr
-otl_flag_overallMAD: Outlier flag by overall MAD calculation method. Outliers will be marked as 1.\cr\cr
+otl_flag_overallMAD: Outlier flag by overall MAD calculation method. Outliers will be marked as 1.\cr
+spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable\cr
+otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.\cr
 Final variable which will be present in all the files\cr
 pll_spl_without_otl: The final target variable without the outliers\cr
 pll_wt: The calculated parallel weight\cr
@@ -91,15 +101,15 @@ pll_flag: The final flag to the outliers.
 In this perticular function, all the techniques will be applied on the initial set of target column,
 then according to the rule specified the final flag will be marked.\cr
 The weightage system in parallel method will enable us to set different kind of rules. For example:\cr
-1.	Mark a point as outlier if it is present in either decompose method or Rolling MAD with NAs or, 
+1.	Mark a point as outlier if it is present in either decompose method or Rolling MAD with NAs or,
 in both the methods of rolling outlier without NA and overall MAD; then the weights can be dec_wt=0.4,
  rMAD_wt=0.4, rMAD_nona_wt=0.2 and overallMAD=0.2 with threshold as 0.3\cr
-2.	Mark as point as outlier if it is in decosition method or rolling method without NAs, 
-then the weights can be as dec_wt=0.5, rMAD_wt=0.0, rMAD_nona_wt=0.5 and overallMAD=0.0 with 
+2.	Mark as point as outlier if it is in decosition method or rolling method without NAs,
+then the weights can be as dec_wt=0.5, rMAD_wt=0.0, rMAD_nona_wt=0.5 and overallMAD=0.0 with
 threshold as 0.4\cr
-3.	Mark the point as outlier if it is present in any method, , 
-then the weights can be as dec_wt=0.25, rMAD_wt=0.25, rMAD_nona_wt=0.25 and overallMAD=0.25 with 
+3.	Mark the point as outlier if it is present in any method, ,
+then the weights can be as dec_wt=0.25, rMAD_wt=0.25, rMAD_nona_wt=0.25 and overallMAD=0.25 with
 threshold as 0.2.\cr\cr
-To call any one particular method we can call this 
-function with that method’s weight as 1 and all others method’s weight as 0
+To call any one particular method we can call this
+function with that method's weight as 1 and all others method's weight as 0
 }
