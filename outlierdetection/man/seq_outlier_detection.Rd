@@ -10,7 +10,7 @@ seq_outlier_detection(data, key, supply, year, qtr_key, seq = c(1, 2, 3,
   rMAD_nona_cutoff = 1.5, rMAD_nona_mad_const = 1.4826,
   rMAD_nona_replace = NA, overall_MAD_cutoff = 1.5,
   overall_MAD_mad_const = 1.4826, overall_MAD_replace = NA,
-  runmed_replace = NA, runmed_quantile = 0.75)
+  runmed_replace = NA, quantile = 0.75)
 }
 \arguments{
 \item{data:}{Th complete data frame or data table or tibble that contains the data}
@@ -64,7 +64,7 @@ the outliers will be replaced by this variable's value. DEFAULT to NA.}
 \item{runmed_replace:}{In the final column for decomposition method,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
-\item{runmed_quantile:}{Compute any of 25\% 50\% 75\% 100\% quartile depending on the data requirements}
+\item{runmed_quantile:}{Compute any of 25\%  50\%  75\%  100\% quartile depending on the data requirements}
 }
 \value{
 The dataset with few extra attributes.
@@ -80,9 +80,9 @@ spl_without_otl_overallMAD: The target attribute in which all the outliers will 
 otl_flag_overallMAD: Outlier flag by overall MAD calculation method. Outliers will be marked as 1.\cr\cr
 spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable\cr
 otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.\cr
-Final variable which will be present in all the files\cr
 seq_spl_without_otl: The final target variable without the outliers\cr
-seq_flag: The final flag to the outliers.
+seq_flag: The final flag to the outliers.\cr
+Final variable which will be present in all the files\cr
 }
 \description{
 In this perticular function, all the techniques will be applied in a sequential manner, that means the first method
