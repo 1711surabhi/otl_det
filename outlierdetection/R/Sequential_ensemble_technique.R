@@ -75,7 +75,7 @@
 #3.rolling qtr without NAs
 #4.overall MAD
 #5.running median
-seq_outlier_detection=function(data, key, supply, year, qtr_key, seq=c(1,2,3,4),
+seq_outlier_detection=function(data, key, supply, year, qtr_key, seq=c(1,2,3,4,5),
                                dec_cutoff=1.5, dec_mad_const=1.4826, dec_replace=NA,
                                rMAD_cutoff=1.5, rMAD_mad_const=1.4826, rMAD_replace=NA,
                                rMAD_nona_cutoff=1.5, rMAD_nona_mad_const=1.4826, rMAD_nona_replace=NA,
