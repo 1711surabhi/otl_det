@@ -57,7 +57,7 @@
 #' @param runmed_wt: Weight that should be applied on otl_flag_runmed to get the final flag weight.
 #' @param runmed_replace: In the final column for decomposition method,
 #' the outliers will be replaced by this variable's value. DEFAULT to NA.
-#' @param runmed_quantile: Compute any of 25% 50% 75% 100% quartile depending on the data requirements
+#' @param runmed_quantile: Compute any of 25\% 50\% 75\% 100\% quartile depending on the data requirements
 #' @param threshold: the threshold value greater than which the final weight will be marked as an outlier.
 #' @return The dataset with few extra attributes.
 #' If the weigth of a perticular method is 0, then attributes for that method will not be there.\cr

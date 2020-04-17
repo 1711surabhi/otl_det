@@ -11,8 +11,8 @@
 #' 1. Decomposiiton Method\cr
 #' 2. Rolling Quarter Mehthod\cr
 #' 3. Rolling Quarter Mehthod without NAs\cr
-#' 4. Overall MAD method.\cr\cr
-#' 5. Running Median method \cr
+#' 4. Overall MAD method.\cr
+#' 5. Running Median method \cr\cr
 #' To call any one particular method we can call this
 #' function with with only that methods number in sequence
 #' @export
@@ -48,7 +48,7 @@
 #' the outliers will be replaced by this variable's value. DEFAULT to NA.
 #' @param runmed_replace: In the final column for decomposition method,
 #' the outliers will be replaced by this variable's value. DEFAULT to NA.
-#' @param runmed_quantile: Compute any of 25% 50% 75% 100% quartile depending on the data requirements
+#' @param runmed_quantile: Compute any of 25\%  50\%  75\%  100\% quartile depending on the data requirements
 #' @return The dataset with few extra attributes.
 #' If the technique number is not present in the parameter seq, then attributes for that method will not be there.\cr
 #' Technique related attributes will be:\cr
@@ -62,9 +62,9 @@
 #' otl_flag_overallMAD: Outlier flag by overall MAD calculation method. Outliers will be marked as 1.\cr\cr
 #' spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable\cr
 #' otl_flag_runmed: Outlier flag by running median method. Outliers will be marked as 1.\cr
-#' Final variable which will be present in all the files\cr
 #' seq_spl_without_otl: The final target variable without the outliers\cr
-#' seq_flag: The final flag to the outliers.
+#' seq_flag: The final flag to the outliers.\cr
+#' Final variable which will be present in all the files\cr
 #' @example seq_test=seq_outlier_detection(data=data_comp2,key=c("CODPRO", "PROFM"), supply="tot_emp",
 #' year="year", qtr_key = "qtr", seq=c(4,1))\cr
 #' Here just the overall MAD and decomposition method will run in sequence
@@ -80,7 +80,7 @@ seq_outlier_detection=function(data, key, supply, year, qtr_key, seq=c(1,2,3,4),
                                rMAD_cutoff=1.5, rMAD_mad_const=1.4826, rMAD_replace=NA,
                                rMAD_nona_cutoff=1.5, rMAD_nona_mad_const=1.4826, rMAD_nona_replace=NA,
                                overall_MAD_cutoff=1.5, overall_MAD_mad_const=1.4826, overall_MAD_replace=NA,
-                               runmed_replace=NA, runmed_quantile = 0.75)
+                               runmed_replace=NA, quantile = 0.75)
 {
 
   if(sum(ifelse(grepl( '[0-5]', seq),0,1))>0)

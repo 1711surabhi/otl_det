@@ -17,7 +17,7 @@
  #' @param key: Attributes on which the split happens. For ex, Country/State/MSA ID, Occupation ID etc
  #' @param year: Year attribute of the data frame
  #' @param qtr_key: Attribute containing the quarter values. NOTE: For yearly data, the quarter column may contain the same value throug out
- #' @param quantile: Compute any of 25%  50%  75%  100% quartile depending on the data requirements
+ #' @param quantile: Compute any of 25\%  50\%  75\%  100\% quartile depending on the data requirements
  #' @param replace: In the final column, the outliers will be replaced by this variable's value. DEFAULTS to NA.
  #'
  #' @return spl_without_otl_runmed: The target attribute in which all the outliers will be replaced by the replace variable \cr
