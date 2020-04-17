@@ -18,7 +18,7 @@ running_median_outlier(data, supply, key, year, qtr_key, quantile = 0.75,
 
 \item{qtr_key:}{Attribute containing the quarter values. NOTE: For yearly data, the quarter column may contain the same value throug out}
 
-\item{quantile:}{Compute any of 25%  50%  75%  100% quartile depending on the data requirements}
+\item{quantile:}{Compute any of 25\%  50\%  75\%  100\% quartile depending on the data requirements}
 
 \item{replace:}{In the final column, the outliers will be replaced by this variable's value. DEFAULTS to NA.}
 }
