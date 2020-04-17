@@ -91,8 +91,8 @@ The sequence can be given in any combination and permutation.\ The code for the 
 1. Decomposiiton Method\cr
 2. Rolling Quarter Mehthod\cr
 3. Rolling Quarter Mehthod without NAs\cr
-4. Overall MAD method.\cr\cr
-5. Running Median method \cr
+4. Overall MAD method.\cr
+5. Running Median method \cr\cr
 To call any one particular method we can call this
 function with with only that methods number in sequence
 }
