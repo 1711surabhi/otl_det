@@ -64,7 +64,7 @@ the outliers will be replaced by this variable's value. DEFAULT to NA.}
 \item{runmed_replace:}{In the final column for decomposition method,
 the outliers will be replaced by this variable's value. DEFAULT to NA.}
 
-\item{runmed_quantile:}{Compute any of 25% 50% 75% 100% quartile depending on the data requirements}
+\item{runmed_quantile:}{Compute any of 25\% 50\% 75\% 100\% quartile depending on the data requirements}
 }
 \value{
 The dataset with few extra attributes.
