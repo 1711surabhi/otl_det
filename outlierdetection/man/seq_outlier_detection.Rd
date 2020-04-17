@@ -5,7 +5,7 @@
 \title{Sequential Ensemble Technique to detect Outlier}
 \usage{
 seq_outlier_detection(data, key, supply, year, qtr_key, seq = c(1, 2, 3,
-  4), dec_cutoff = 1.5, dec_mad_const = 1.4826, dec_replace = NA,
+  4, 5), dec_cutoff = 1.5, dec_mad_const = 1.4826, dec_replace = NA,
   rMAD_cutoff = 1.5, rMAD_mad_const = 1.4826, rMAD_replace = NA,
   rMAD_nona_cutoff = 1.5, rMAD_nona_mad_const = 1.4826,
   rMAD_nona_replace = NA, overall_MAD_cutoff = 1.5,
