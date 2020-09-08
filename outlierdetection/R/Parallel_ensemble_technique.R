@@ -160,7 +160,7 @@ parallel_outlier_detection=function(data, key, supply, year, qtr_key,
     {
       txt=paste0(txt,"+")
     }
-    txt=paste0(txt,"(RunningMedian_wt*coalesce(otl_flag_runmed,0))")
+    txt=paste0(txt,"(runmed_wt*coalesce(otl_flag_runmed,0))")
   }
 
   gc()
