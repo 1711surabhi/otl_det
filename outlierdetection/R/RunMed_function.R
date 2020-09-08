@@ -29,13 +29,24 @@
 running_median_outlier <- function(data, supply, key, year, qtr_key, quantile = 0.75, replace=NA){
   data=data %>% arrange_at(vars(one_of(c(key, year, qtr_key))))
   data=data %>%
-  mutate_(sup=supply) %>%
-  group_by_at(vars(one_of(key))) %>%
-  mutate(median = runmed(sup, 3),
-         diff = abs(sup-median),
-         quartile = as.numeric(quantile(diff, quantile)),
-         spl_without_otl_runmed = sup,
-         otl_flag_runmed = 0) %>% as.data.frame()
+    mutate_(sup=supply) %>%
+    group_by_at(vars(one_of(key)))
+  
+  data_null=data %>%
+    filter(is.na(sup)) %>%
+    mutate(spl_without_otl_runmed=NA,
+           otl_flag_runmed=1) %>%
+    select(-sup)
+  
+  data=data %>%
+    filter(!is.na(sup))
+  
+  data=data %>%
+    mutate(median = runmed(sup, 3),
+           diff = abs(sup-median),
+           quartile = as.numeric(quantile(diff, quantile)),
+           spl_without_otl_runmed = sup,
+           otl_flag_runmed = 0) %>% as.data.frame()
   data$spl_without_otl_runmed[data$diff > data$quartile] = replace
   data$spl_without_otl_runmed[is.na(data[,mget("supply")[[1]]])] = replace
   data$otl_flag_runmed[data$diff>data$quartile | is.na(data[,mget("supply")[[1]]])] = 1
@@ -43,6 +54,10 @@ running_median_outlier <- function(data, supply, key, year, qtr_key, quantile = 
   data$sup=NULL
   data$quartile=NULL
   data$diff=NULL
+  
+  data=bind_rows(data, data_null)
+  data=data %>% arrange_at(vars(one_of(c(key, year, qtr_key))))
+  
   return(data)
 }
 
