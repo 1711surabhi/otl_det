@@ -80,7 +80,7 @@ seq_outlier_detection=function(data, key, supply, year, qtr_key, seq=c(1,2,3,4,5
                                rMAD_cutoff=1.5, rMAD_mad_const=1.4826, rMAD_replace=NA,
                                rMAD_nona_cutoff=1.5, rMAD_nona_mad_const=1.4826, rMAD_nona_replace=NA,
                                overall_MAD_cutoff=1.5, overall_MAD_mad_const=1.4826, overall_MAD_replace=NA,
-                               runmed_replace=NA, quantile = 0.75)
+                               runmed_replace=NA, runmed_quantile = 0.75)
 {
 
   if(sum(ifelse(grepl( '[0-5]', seq),0,1))>0)
