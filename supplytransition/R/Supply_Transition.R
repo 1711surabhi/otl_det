@@ -788,7 +788,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       mutate(diff=abs(sum_loc_tot_emp-sum_soc_tot_emp)) %>%
       mutate(diff_perc=diff/sum_loc_tot_emp*100)
     
-    if(max(msa_aggr$diff_perc)>10)
+    if(max(msa_aggr$diff_perc)>5)
     {
       winDialog(type = c("ok"), "There is difference between LOC and SOC for msa, please validate thoroughly the msa file.")
       print("There is difference between LOC and SOC for msa, please validate thoroughly msa file.")
