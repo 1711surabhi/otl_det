@@ -221,8 +221,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
         }
       }
     }
-    
-    #################################################################################
+
     ###########################################Country Calculations Starts
     
     print("Processing file for Country")
@@ -315,10 +314,40 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     write.csv(country_final, paste0(output_path,"/country_supply_output.csv"), row.names = F)
     write.csv(country_rate, paste0(output_path,"/ONET Country Rates and Supply.csv"), row.names = F)
     
+    ###########warning message if LOC and SOC number doesnot match
+    
+    country_loc_aggr=country_supply_file %>%
+      group_by(country_id, year) %>%
+      summarise(sum_loc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    country_soc_aggr= country_final %>%
+      group_by(country_id, year) %>%
+      summarise(sum_soc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    country_aggr= left_join( country_loc_aggr, country_soc_aggr, by=c("country_id", "year"))
+    
+    country_aggr= country_aggr %>%
+      mutate(diff=abs(sum_loc_tot_emp-sum_soc_tot_emp)) %>%
+      mutate(diff_perc=diff/sum_loc_tot_emp*100)
+    
+    if(max(country_aggr$diff_perc)>5)
+    {
+      winDialog(type = c("ok"), "There is difference between LOC and SOC for country, please validate thoroughly the country file.")
+      print("There is difference between LOC and SOC for country, please validate thoroughly country file.")
+    }
+    ################################################################
+    
+    
     final_list[[length(final_list)+1]]=list(data.frame(country_final), data.frame(country_rate))
     names(final_list)[length(final_list)]="Country"
     
   }
+  
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
   
   if(is.data.frame(state_supply_file))
   {
@@ -386,7 +415,6 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       }
     }
     
-    #################################################################################
     ###########################################State Calculations Starts
     
     print("Processing file for State")
@@ -491,6 +519,29 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
                                   onet_occupation_type_id=occupation_type_id,
                                   state_onet_supply=tot_emp),
                          by=c("state_id", "onet_code", "year"))
+
+    ###########warning message if LOC and SOC number doesnot match
+    
+    state_loc_aggr=state_supply_file %>%
+      group_by(state_id, year) %>%
+      summarise(sum_loc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    state_soc_aggr= state_final %>%
+      group_by(state_id, year) %>%
+      summarise(sum_soc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    state_aggr= left_join( state_loc_aggr, state_soc_aggr, by=c("state_id", "year"))
+    
+    state_aggr= state_aggr %>%
+      mutate(diff=abs(sum_loc_tot_emp-sum_soc_tot_emp)) %>%
+      mutate(diff_perc=diff/sum_loc_tot_emp*100)
+    
+    if(max(state_aggr$diff_perc)>5)
+    {
+      winDialog(type = c("ok"), "There is difference between LOC and SOC for state, please validate thoroughly the state file.")
+      print("There is difference between LOC and SOC for state, please validate thoroughly state file.")
+    }
+    ################################################################
     
     
     write.csv(state_final, paste0(output_path,"/state_supply_output.csv"), row.names = F)
@@ -500,6 +551,12 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     names(final_list)[length(final_list)]="State"
     
   }
+  
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
+  ##################################################################################################################
   
   if(is.data.frame(msa_supply_file))
   {
@@ -565,7 +622,6 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
       }
     }
     
-    #################################################################################
     ###########################################msa Calculations Starts
     
     print("Processing file for MSA")
@@ -714,6 +770,30 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
                                 onet_occupation_type_id=occupation_type_id,
                                 msa_onet_supply=tot_emp),
                        by=c("msa_id", "onet_code", "year"))
+    
+
+    ###########warning message if LOC and SOC number doesnot match
+    
+    msa_loc_aggr=msa_supply_file %>%
+      group_by(msa_id, year) %>%
+      summarise(sum_loc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    msa_soc_aggr= msa_final %>%
+      group_by(msa_id, year) %>%
+      summarise(sum_soc_tot_emp=sum(tot_emp, na.rm=T))
+    
+    msa_aggr= left_join( msa_loc_aggr, msa_soc_aggr, by=c("msa_id", "year"))
+    
+    msa_aggr= msa_aggr %>%
+      mutate(diff=abs(sum_loc_tot_emp-sum_soc_tot_emp)) %>%
+      mutate(diff_perc=diff/sum_loc_tot_emp*100)
+    
+    if(max(msa_aggr$diff_perc)>10)
+    {
+      winDialog(type = c("ok"), "There is difference between LOC and SOC for msa, please validate thoroughly the msa file.")
+      print("There is difference between LOC and SOC for msa, please validate thoroughly msa file.")
+    }
+    ################################################################
     
     write.csv(msa_final, paste0(output_path,"/msa_supply_output.csv"), row.names = F)
     write.csv(msa_rate, paste0(output_path,"/ONET msa Rates and Supply.csv"), row.names = F)
