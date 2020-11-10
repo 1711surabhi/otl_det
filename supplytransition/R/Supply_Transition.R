@@ -96,7 +96,7 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
   print("Making db connection")
   mydb = dbConnect(MySQL(), 
                    user='sagrawal', password='vzp2dDSFdGWBm5Sm', 
-                   host='10.86.21.235')
+                   host='lookup01-unsigned-c-ro-rds.wantedanalytics.com')
   #host='10.0.5.30')
   
   query = paste0("select s.country_id, s.id as state_id, a.msa_id, a.primary_state from norm_prod.states_2016 s left join norm_prod.msas_states_2016 a on s.id=a.state_id where s.country_id=",country_id,";")
