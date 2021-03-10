@@ -799,6 +799,9 @@ supply_transition=function(country_supply_file=NA, state_supply_file=NA, msa_sup
     
     final_list[[length(final_list)+1]]=list(data.frame(msa_final), data.frame(msa_rate))
     names(final_list)[length(final_list)]="MSA"
+    
+    final_list
+    
   }
 }
 
